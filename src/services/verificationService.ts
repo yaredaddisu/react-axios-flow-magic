@@ -27,7 +27,9 @@ interface FormData {
   tinNumber: string;
   incorporationType: string;
   isVatRegistered: boolean;
+  vatRegistrationNumber?: string;
   isBettingOrFantasy: boolean;
+  bettingLicenseNumber?: string;
   tradeLicense: File | null;
   tinCertificate: File | null;
   memorandumOfAssociation: File | null;
@@ -70,8 +72,21 @@ export const submitBusinessVerification = async (formData: FormData) => {
     submitData.append('businessRegistrationNo', formData.businessRegistrationNo);
     submitData.append('tinNumber', formData.tinNumber);
     submitData.append('incorporationType', formData.incorporationType);
-    submitData.append('isVatRegistered', formData.isVatRegistered.toString());
-    submitData.append('isBettingOrFantasy', formData.isBettingOrFantasy.toString());
+    
+    // Handle VAT registration - send the actual number if registered, otherwise send 'false'
+    if (formData.isVatRegistered && formData.vatRegistrationNumber) {
+      submitData.append('vatRegistration', formData.vatRegistrationNumber);
+    } else {
+      submitData.append('vatRegistration', 'false');
+    }
+    
+    // Handle betting license - send the actual number if applicable, otherwise send 'false'
+    if (formData.isBettingOrFantasy && formData.bettingLicenseNumber) {
+      submitData.append('bettingLicense', formData.bettingLicenseNumber);
+    } else {
+      submitData.append('bettingLicense', 'false');
+    }
+    
     submitData.append('contactPersonName', formData.contactPersonName);
     submitData.append('contactPersonPhone', formData.contactPersonPhone);
     submitData.append('contactPersonEmail', formData.contactPersonEmail);
@@ -102,6 +117,8 @@ export const submitBusinessVerification = async (formData: FormData) => {
       console.log('Added ID document file:', formData.idDocument.name);
     }
     
+    console.log('VAT Registration:', formData.isVatRegistered ? formData.vatRegistrationNumber || 'No number provided' : 'Not registered');
+    console.log('Betting License:', formData.isBettingOrFantasy ? formData.bettingLicenseNumber || 'No number provided' : 'Not applicable');
     console.log('Sending business verification request...');
     
     // Make the API request
