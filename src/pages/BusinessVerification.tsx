@@ -35,7 +35,9 @@ interface FormData {
   
   // VAT & Additional Info
   isVatRegistered: boolean;
+  vatRegistrationNumber?: string;
   isBettingOrFantasy: boolean;
+  bettingLicenseNumber?: string;
   
   // Documents
   tradeLicense: File | null;
@@ -79,7 +81,9 @@ const BusinessVerification = () => {
     tinNumber: '',
     incorporationType: '',
     isVatRegistered: false,
+    vatRegistrationNumber: '',
     isBettingOrFantasy: false,
+    bettingLicenseNumber: '',
     tradeLicense: null,
     tinCertificate: null,
     memorandumOfAssociation: null,

@@ -15,7 +15,9 @@ interface FormData {
   tinNumber: string;
   incorporationType: string;
   isVatRegistered: boolean;
+  vatRegistrationNumber?: string;
   isBettingOrFantasy: boolean;
+  bettingLicenseNumber?: string;
 }
 
 interface BusinessInformationStepProps {
@@ -162,23 +164,51 @@ const BusinessInformationStep: React.FC<BusinessInformationStepProps> = ({ formD
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-gray-800">Additional Information</h3>
         
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="vatRegistered"
-              checked={formData.isVatRegistered}
-              onCheckedChange={(checked) => updateFormData({ isVatRegistered: !!checked })}
-            />
-            <Label htmlFor="vatRegistered">Are you VAT Registered?</Label>
+        <div className="space-y-4">
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="vatRegistered"
+                checked={formData.isVatRegistered}
+                onCheckedChange={(checked) => updateFormData({ isVatRegistered: !!checked })}
+              />
+              <Label htmlFor="vatRegistered">Are you VAT Registered?</Label>
+            </div>
+            
+            {formData.isVatRegistered && (
+              <div className="ml-6">
+                <Label htmlFor="vatRegistrationNumber">VAT Registration Number *</Label>
+                <Input
+                  id="vatRegistrationNumber"
+                  value={formData.vatRegistrationNumber || ''}
+                  onChange={(e) => updateFormData({ vatRegistrationNumber: e.target.value })}
+                  placeholder="Enter VAT registration number"
+                />
+              </div>
+            )}
           </div>
 
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="bettingFantasy"
-              checked={formData.isBettingOrFantasy}
-              onCheckedChange={(checked) => updateFormData({ isBettingOrFantasy: !!checked })}
-            />
-            <Label htmlFor="bettingFantasy">Are you a Betting Or Fantasy Sports company?</Label>
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="bettingFantasy"
+                checked={formData.isBettingOrFantasy}
+                onCheckedChange={(checked) => updateFormData({ isBettingOrFantasy: !!checked })}
+              />
+              <Label htmlFor="bettingFantasy">Are you a Betting Or Fantasy Sports company?</Label>
+            </div>
+            
+            {formData.isBettingOrFantasy && (
+              <div className="ml-6">
+                <Label htmlFor="bettingLicenseNumber">Betting License Number *</Label>
+                <Input
+                  id="bettingLicenseNumber"
+                  value={formData.bettingLicenseNumber || ''}
+                  onChange={(e) => updateFormData({ bettingLicenseNumber: e.target.value })}
+                  placeholder="Enter betting license number"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
